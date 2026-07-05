@@ -73,6 +73,7 @@ function init3DCake() {
         return;
     }
 
+    try {
     // Three.js scene
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -212,6 +213,19 @@ function init3DCake() {
 
     // Mic fallback
     initMicrophone();
+
+    } catch(err) {
+        console.error('3D Cake error:', err);
+        // Remove broken canvas if any
+        const broken = container.querySelector('canvas');
+        if (broken) broken.remove();
+        // Show click-to-wish fallback
+        const msg = document.createElement('div');
+        msg.style.cssText = 'color:#ff69b4;font-size:1.4rem;text-align:center;padding:40px;font-family:Dancing Script,cursive;line-height:2;';
+        msg.innerHTML = '🎂<br>Click anywhere to blow out the candle<br>and make your wish! 💫';
+        container.appendChild(msg);
+        container.addEventListener('click', blowOutCandleFallback);
+    }
 }
 
 // === Orbit Drag ===

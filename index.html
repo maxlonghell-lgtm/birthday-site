@@ -208,8 +208,16 @@
         <button id="fullscreenBtn">
             <img src="./image/full.png" alt="Fullscreen">
         </button>
-        <!-- Three.js for 3D Cake -->
+        <!-- Three.js r158 for 3D Cake (CapsuleGeometry requires r140+) -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <script>
+        // Polyfill CapsuleGeometry for r128 using a cylinder
+        if (typeof THREE !== 'undefined' && !THREE.CapsuleGeometry) {
+            THREE.CapsuleGeometry = function(radius, length, capSegments, radialSegments) {
+                return new THREE.CylinderGeometry(radius, radius, length + radius * 2, radialSegments || 8);
+            };
+        }
+        </script>
 
         <script src="./lang.js"></script>
         <script src="./jscp/settings.js"></script>

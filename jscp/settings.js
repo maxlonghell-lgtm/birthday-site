@@ -1081,13 +1081,15 @@ applySettingsButton.addEventListener('click', () => {
         const contentInput = document.getElementById(`pageContent${index}`);
 
         const newPage = {};
-        if (fileInput.files.length > 0) {
+        if (fileInput && fileInput.files && fileInput.files.length > 0) {
             newPage.image = URL.createObjectURL(fileInput.files[0]);
         } else {
             newPage.image = page.image;
         }
         if (contentInput) {
             newPage.content = contentInput.value;
+        } else {
+            newPage.content = page.content || '';
         }
         newPages.push(newPage);
     });

@@ -1,84 +1,116 @@
 // Web Audio API Visualizer matching the stars theme
 
-let audioCtx, analyser, dataArray, visualizerCanvas, visualizerCtx;
+let audioCtx, analyserViz, dataArrayViz, visualizerCanvas, visualizerCtx;
 let isVisualizerInit = false;
+let audioSourceNode = null; // Track the source node to avoid double-connecting
 
 function initVisualizer() {
-    if (isVisualizerInit) return;
+    if (isVisualizerInit) {
+        // Already inited — just resume if suspended
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        return;
+    }
+
     const audioElement = document.getElementById('birthdayAudio');
     if (!audioElement) return;
 
-    // Create Canvas
-    visualizerCanvas = document.createElement('canvas');
-    visualizerCanvas.id = 'audio-visualizer';
-    visualizerCanvas.style.position = 'fixed';
-    visualizerCanvas.style.bottom = '0';
-    visualizerCanvas.style.left = '0';
-    visualizerCanvas.style.width = '100%';
-    visualizerCanvas.style.height = '150px';
-    visualizerCanvas.style.zIndex = '100'; // Above background but below UI
-    visualizerCanvas.style.pointerEvents = 'none';
-    document.body.appendChild(visualizerCanvas);
-    
-    visualizerCtx = visualizerCanvas.getContext('2d');
-    
+    // Create Canvas — only once
+    if (!visualizerCanvas) {
+        visualizerCanvas = document.createElement('canvas');
+        visualizerCanvas.id = 'audio-visualizer';
+        visualizerCanvas.style.cssText = `
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            z-index: 9000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        `;
+        document.body.appendChild(visualizerCanvas);
+        visualizerCtx = visualizerCanvas.getContext('2d');
+    }
+
     const resizeCanvas = () => {
         visualizerCanvas.width = window.innerWidth;
-        visualizerCanvas.height = 150;
+        visualizerCanvas.height = 120;
     };
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Setup Audio Context
+    // Setup Audio Context — only once
     try {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 128;
-        
-        const source = audioCtx.createMediaElementSource(audioElement);
-        source.connect(analyser);
-        analyser.connect(audioCtx.destination);
-        
-        const bufferLength = analyser.frequencyBinCount;
-        dataArray = new Uint8Array(bufferLength);
-        
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        if (!analyserViz) {
+            analyserViz = audioCtx.createAnalyser();
+            analyserViz.fftSize = 256;
+        }
+
+        // Connect source only once — connecting twice throws InvalidStateError
+        if (!audioSourceNode) {
+            audioSourceNode = audioCtx.createMediaElementSource(audioElement);
+            audioSourceNode.connect(analyserViz);
+            analyserViz.connect(audioCtx.destination);
+        }
+
+        const bufferLength = analyserViz.frequencyBinCount;
+        dataArrayViz = new Uint8Array(bufferLength);
+
         isVisualizerInit = true;
+
+        // Fade in the canvas
+        setTimeout(() => {
+            if (visualizerCanvas) visualizerCanvas.style.opacity = '1';
+        }, 500);
+
         drawVisualizer();
     } catch (e) {
-        console.log("Web Audio API not supported or CORS issue:", e);
+        console.warn('Visualizer init error:', e);
     }
 }
 
 function drawVisualizer() {
-    if (!isVisualizerInit) return;
+    if (!isVisualizerInit || !visualizerCanvas) return;
     requestAnimationFrame(drawVisualizer);
-    
-    analyser.getByteFrequencyData(dataArray);
-    
-    visualizerCtx.clearRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
-    
-    const barWidth = (visualizerCanvas.width / dataArray.length) * 2.5;
-    let barHeight;
+
+    analyserViz.getByteFrequencyData(dataArrayViz);
+
+    const w = visualizerCanvas.width;
+    const h = visualizerCanvas.height;
+
+    visualizerCtx.clearRect(0, 0, w, h);
+
+    const total = dataArrayViz.length;
+    const barWidth = (w / total) * 2;
     let x = 0;
-    
-    for (let i = 0; i < dataArray.length; i++) {
-        barHeight = dataArray[i] / 1.2; // Taller bars
-        
-        // Premium star matching glow style
-        visualizerCtx.shadowBlur = 20;
-        visualizerCtx.shadowColor = 'rgba(255, 105, 180, 0.9)'; // Pink glow
-        visualizerCtx.fillStyle = `rgba(255, 255, 255, 0.9)`; // Solid white core
-        
-        // Draw centered vertically at the bottom
-        visualizerCtx.fillRect(x, visualizerCanvas.height - barHeight, barWidth, barHeight);
-        
-        x += barWidth + 2;
+
+    for (let i = 0; i < total; i++) {
+        const pct = dataArrayViz[i] / 255;
+        const barHeight = pct * h * 0.9;
+
+        // Gradient from pink to hot pink
+        const r = Math.floor(255);
+        const g = Math.floor(105 + (1 - pct) * 50);
+        const b = Math.floor(180 - pct * 60);
+
+        visualizerCtx.shadowBlur = 18;
+        visualizerCtx.shadowColor = `rgba(255, 20, 147, 0.8)`;
+        visualizerCtx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+        visualizerCtx.fillRect(x, h - barHeight, barWidth, barHeight);
+
+        x += barWidth + 1;
     }
 }
 
-// Trigger on any interaction to bypass browser autoplay restrictions
+// Trigger on first click anywhere — bypasses browser autoplay block
 document.addEventListener('click', () => {
-    if (!isVisualizerInit) initVisualizer();
+    initVisualizer();
     if (audioCtx && audioCtx.state === 'suspended') {
         audioCtx.resume();
     }
