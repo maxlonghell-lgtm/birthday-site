@@ -900,10 +900,25 @@ function showFloatingHearts() {
         if (heartCount < maxFloatingHearts) {
             setTimeout(spawnHeart, 1600); 
         }
-    }
+}
 
     spawnHeart();
 }
+
+// Add simple click-to-open for the hand icon hint
+document.addEventListener('DOMContentLoaded', () => {
+    const hint = document.querySelector('.open-hint');
+    if (hint) {
+        hint.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!isFlipping) {
+                nextPage();
+            }
+        });
+        // Also make it look clickable
+        hint.style.cursor = 'pointer';
+    }
+});
 
 function showBook() {
 

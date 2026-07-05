@@ -151,8 +151,40 @@ function startMiniGame() {
         gift.style.left = Math.random() * 80 + 10 + '%';
         gift.style.fontSize = '35px';
         gift.style.filter = 'drop-shadow(0 0 8px rgba(255,105,180,0.8))';
+        gift.style.cursor = 'pointer'; // Make it look clickable
+        
+        // Add direct click/touch listener for cursor catching
+        const catchGift = (e) => {
+            if (isGameOver) return;
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Catch animation
+            gift.style.transform = 'scale(0)';
+            gift.style.transition = 'transform 0.2s';
+            setTimeout(() => gift.remove(), 200);
+            
+            // Remove from array safely
+            const index = gifts.findIndex(g => g.el === gift);
+            if (index > -1) {
+                gifts.splice(index, 1);
+            }
+            
+            score++;
+            scoreBoard.innerText = "Score: " + score;
+            scoreBoard.style.transform = 'scale(1.2)';
+            setTimeout(() => scoreBoard.style.transform = 'scale(1)', 150);
+
+            if (score >= 10) {
+                winGame();
+            }
+        };
+        
+        gift.addEventListener('mousedown', catchGift);
+        gift.addEventListener('touchstart', catchGift, { passive: false });
+        
         gameArea.appendChild(gift);
-        gifts.push({ el: gift, y: -40 });
+        gifts.push({ el: gift, y: -40, isCaught: false });
     }
 
     function gameLoop() {

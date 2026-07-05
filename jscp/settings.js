@@ -288,9 +288,20 @@ function initializeDefaultSettings() {
         gift: '', 
         enableBook: true,
         enableHeart: true,
-        isSave: false,  
-        colorTheme: 'pink',
-        pages: [
+        isSave: false
+    };
+
+    // Try to load settings from localStorage right after declaration
+    try {
+        const saved = localStorage.getItem('birthdaySettings');
+        if (saved) {
+            window.settings = Object.assign(window.settings, JSON.parse(saved));
+        }
+    } catch (e) {
+        console.warn('Could not load settings from localStorage', e);
+    }
+
+    window.settings.pages = [
             { image: './image/Birthday!/cover.jpg', content: '' }, 
             { image: './image/Birthday!/photo1.jpg', content: 'Dear Zahra, you bring so much joy and happiness! 💕' },
             { image: './image/Birthday!/photo2.jpg', content: 'Your smile lights up every room you enter! ✨' },
@@ -301,8 +312,7 @@ function initializeDefaultSettings() {
             { image: './image/Birthday!/photo7.jpg', content: 'You deserve all the happiness! 💕' },
             { image: './image/Birthday!/photo8.jpg', content: 'Love you so much! Have the best day! ❤️🎂' },
             { image: './image/Birthday!/9.jpg', content: '' } 
-        ]
-    };
+        ];
 
     pages = window.settings.pages;
 }
@@ -1095,6 +1105,11 @@ applySettingsButton.addEventListener('click', () => {
     }
 
     window.settings = settings;
+    try {
+        localStorage.setItem('birthdaySettings', JSON.stringify(settings));
+    } catch (e) {
+        console.warn('Could not save settings to localStorage', e);
+    }
 
     resetWebsiteState();
 
