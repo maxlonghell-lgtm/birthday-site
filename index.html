@@ -11,6 +11,10 @@
     <link rel="icon" href="./image/logo.png" type="image/png">
     <link rel="apple-touch-icon" href="./image/logo.png">
 
+    <!-- PWA Settings -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#ff69b4">
+
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="GS Birthday Site 🎁">
     <meta property="og:description"content="A special birthday surprise! A beautiful interactive site with animations, music, and memories!">
@@ -96,6 +100,74 @@
                         </div>
                     </div>
 
+                    <!-- Music Settings -->
+                    <div class="settings-section">
+                        <h3 data-i18n="music">🎵 Music Settings</h3>
+                        <div class="form-group">
+                            <label for="backgroundMusic" data-i18n="backgroundMusic">Background Music:</label>
+                            <select id="backgroundMusic"></select>
+                        </div>
+                    </div>
+
+                    <!-- Countdown Settings -->
+                    <div class="settings-section">
+                        <h3 data-i18n="countdown">⏳ Countdown Settings</h3>
+                        <div class="form-group">
+                            <label for="countdownTime" data-i18n="countdownTime">Countdown Time:</label>
+                            <input type="number" id="countdownTime" value="3" min="1" max="10">
+                        </div>
+                    </div>
+
+                    <!-- Main Text Sequence -->
+                    <div class="settings-section">
+                        <h3 data-i18n="sequence">📝 Main Text Settings</h3>
+                        <div class="form-group">
+                            <label for="sequenceText" data-i18n="sequenceText">Main text content:</label>
+                            <input type="text" id="sequenceText" value="HAPPY|BIRTHDAY|TO|YOU|ZAHRA|❤">
+                        </div>
+                        <div class="form-group">
+                            <label for="sequenceColor" data-i18n="sequenceColor">Main text color:</label>
+                            <input type="color" id="sequenceColor" value="#ff69b4">
+                        </div>
+                    </div>
+
+                    <!-- Matrix Settings -->
+                    <div class="settings-section">
+                        <h3 data-i18n="matrix">🔢 Matrix Effect Settings</h3>
+                        <div class="form-group">
+                            <label for="matrixText" data-i18n="matrixText">Matrix main text:</label>
+                            <input type="text" id="matrixText" value="HAPPYBIRTHDAY">
+                        </div>
+                    </div>
+
+                    <!-- Gift & Asset Settings -->
+                    <div class="settings-section">
+                        <h3 data-i18n="gift">🎁 Animated Image Settings</h3>
+                        <div class="form-group">
+                            <label for="giftImage" data-i18n="giftImage">Animated Image (optional):</label>
+                            <select id="giftImage"></select>
+                        </div>
+                    </div>
+
+                    <!-- Toggle Features -->
+                    <div class="settings-section">
+                        <h3 data-i18n="book">📖 Book & Features Settings</h3>
+                        <div class="form-group">
+                            <label for="enableBook" data-i18n="enableBook">Show book:</label>
+                            <select id="enableBook">
+                                <option value="true" data-i18n="on">On</option>
+                                <option value="false" data-i18n="off">Off</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="enableHeart" data-i18n="enableHeart">Show heart effect:</label>
+                            <select id="enableHeart">
+                                <option value="true" data-i18n="on">On</option>
+                                <option value="false" data-i18n="off">Off</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="settings-p">
                         <div data-i18n="followNote" class="settings-p">
                             💝 This special birthday website was lovingly created by geniusinsanity
@@ -128,9 +200,29 @@
         <button id="fullscreenBtn">
             <img src="./image/full.png" alt="Fullscreen">
         </button>
+        <!-- Three.js for 3D Cake -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
         <script src="./lang.js"></script>
         <script src="./jscp/settings.js"></script>
+        <script src="./jscp/timeline.js"></script>
+        <script src="./jscp/visualizer.js"></script>
+        <script src="./jscp/3d_cake.js"></script>
+        <script src="./jscp/minigame.js"></script>
         <script src="./jscp/ui.js"></script>
+
+        <!-- Service Worker Registration -->
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./sw.js').then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }).catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+                });
+            }
+        </script>
 </body>
 
 </html>

@@ -1080,6 +1080,13 @@ function spawnHeartPhotosCentered() {
             setTimeout(() => {
                 requestAnimationFrame(spawnNext);
             }, 80); 
+        } else {
+            // Heart photos finished spawning, wait a bit then show timeline
+            setTimeout(() => {
+                if (typeof initTimeline === 'function') {
+                    initTimeline();
+                }
+            }, 2000);
         }
     }
 

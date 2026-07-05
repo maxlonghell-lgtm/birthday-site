@@ -1048,22 +1048,26 @@ applySettingsButton.addEventListener('click', () => {
         return;
     }
 
-    settings.music = document.getElementById('backgroundMusic').value;
-    settings.countdown = parseInt(document.getElementById('countdownTime').value) || 3;
-    settings.matrixText = document.getElementById('matrixText').value || 'HAPPYBIRTHDAY';
-    settings.matrixColor1 = document.getElementById('matrixColor1').value;
-    settings.matrixColor2 = document.getElementById('matrixColor2').value;
-    settings.sequence = document.getElementById('sequenceText').value || 'HAPPY|BIRTHDAY|MY|CUTEE|LITTLE|SWARALI|❤';
-    settings.sequenceColor = document.getElementById('sequenceColor').value;
-    settings.gift = document.getElementById('giftImage').value;
+    settings.music = document.getElementById('backgroundMusic')?.value || settings.music;
+    settings.countdown = parseInt(document.getElementById('countdownTime')?.value) || settings.countdown || 3;
+    settings.matrixText = document.getElementById('matrixText')?.value || settings.matrixText || 'HAPPYBIRTHDAY';
+    settings.matrixColor1 = document.getElementById('matrixColor1')?.value || settings.matrixColor1;
+    settings.matrixColor2 = document.getElementById('matrixColor2')?.value || settings.matrixColor2;
+    settings.sequence = document.getElementById('sequenceText')?.value || settings.sequence || 'HAPPY|BIRTHDAY|TO|YOU|ZAHRA|❤';
+    settings.sequenceColor = document.getElementById('sequenceColor')?.value || settings.sequenceColor;
+    settings.gift = document.getElementById('giftImage')?.value || settings.gift;
 
     const activeButton = document.querySelector('.color-theme-btn.active');
     if (activeButton) {
         settings.colorTheme = activeButton.getAttribute('data-theme');
     }
 
-    settings.enableBook = document.getElementById('enableBook').value === 'true';
-    settings.enableHeart = document.getElementById('enableHeart').value === 'true';
+    const enableBookInput = document.getElementById('enableBook');
+    settings.enableBook = enableBookInput ? enableBookInput.value === 'true' : settings.enableBook;
+    
+    const enableHeartInput = document.getElementById('enableHeart');
+    settings.enableHeart = enableHeartInput ? enableHeartInput.value === 'true' : settings.enableHeart;
+    
     settings.isSave = document.getElementById('isSave')?.checked || false;
 
     window.lastIsSaveState = settings.isSave;
