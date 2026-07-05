@@ -5,64 +5,79 @@ function initTimeline() {
     // Check if timeline already exists
     if (document.getElementById('timeline-container')) return;
 
-    // Create Timeline UI
+    // Create Timeline UI - full screen overlay
     const timelineContainer = document.createElement('div');
     timelineContainer.id = 'timeline-container';
-    timelineContainer.className = 'timeline-container hidden';
+    timelineContainer.className = 'timeline-container';
+    timelineContainer.style.opacity = '0';
+    timelineContainer.style.transition = 'opacity 1s ease';
 
-    // Some placeholder milestones
+    // Milestones data
     const milestones = [
-        { year: "2018", title: "The Beginning", desc: "Where it all started...", img: "./image/placeholder1.jpg" },
-        { year: "2020", title: "Unforgettable Memories", desc: "A time of joy and laughter.", img: "./image/placeholder2.jpg" },
-        { year: "2023", title: "Growing Stronger", desc: "Achieving milestones together.", img: "./image/placeholder3.jpg" },
-        { year: "2024", title: "Happy Birthday Zahra!", desc: "Wishing you the absolute best today!", img: "./image/placeholder4.jpg" }
+        { year: "2018", title: "The Beginning ✨", desc: "Where it all started — a star was born! 🌟" },
+        { year: "2020", title: "Unforgettable Memories 💫", desc: "A time filled with joy, laughter, and love." },
+        { year: "2022", title: "Growing Stronger 🌸", desc: "Every day you grow more amazing and beautiful." },
+        { year: "2023", title: "Shining Bright ⭐", desc: "Your kindness and warmth touched so many hearts." },
+        { year: "2024", title: "Happy Birthday Zahra! 🎂", desc: "Wishing you the absolute best today and always!" }
     ];
 
-    let html = '<h2 class="timeline-title">Memory Lane</h2><div class="timeline">';
+    let html = '<h2 class="timeline-title">✨ Memory Lane ✨</h2><div class="timeline">';
     milestones.forEach((m, index) => {
         const side = index % 2 === 0 ? 'left' : 'right';
         html += `
             <div class="timeline-item ${side}">
                 <div class="timeline-content">
-                    <h3>${m.year} - ${m.title}</h3>
+                    <span class="timeline-year">${m.year}</span>
+                    <h3>${m.title}</h3>
                     <p>${m.desc}</p>
-                    <div class="timeline-img-placeholder">📸 Photo Space</div>
                 </div>
             </div>
         `;
     });
     html += '</div>';
 
-    // Add a button to proceed to the Cake (Phase 4)
-    html += '<button id="proceedToCakeBtn" class="timeline-btn">Make a Wish 🎂</button>';
+    // Button - placed OUTSIDE the scrollable area at the bottom
+    const btnHtml = `
+        <div class="timeline-btn-wrapper">
+            <button id="proceedToCakeBtn" class="timeline-btn">
+                Make a Wish 🎂
+            </button>
+        </div>
+    `;
 
-    timelineContainer.innerHTML = html;
+    timelineContainer.innerHTML = html + btnHtml;
     document.body.appendChild(timelineContainer);
 
-    // Fade in timeline and scroll to bottom button later
-    setTimeout(() => {
-        timelineContainer.classList.remove('hidden');
-        timelineContainer.classList.add('fade-in-up');
-        
-        // Auto scroll down slowly to reveal the button after they read the timeline
-        setTimeout(() => {
-            const btn = document.getElementById('proceedToCakeBtn');
-            if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            
-            // Highlight button
-            btn.style.animation = 'pulse 2s infinite';
-        }, 5000); // Scroll down after 5 seconds
-    }, 500);
-
-    // Event listener for next phase
-    document.getElementById('proceedToCakeBtn').addEventListener('click', () => {
-        timelineContainer.classList.remove('fade-in-up');
-        timelineContainer.classList.add('fade-out-down');
-        setTimeout(() => {
-            timelineContainer.remove();
-            if (typeof init3DCake === 'function') {
-                init3DCake();
-            }
-        }, 1000);
+    // Fade in
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            timelineContainer.style.opacity = '1';
+        });
     });
+
+    // Attach click — do NOT use scrollIntoView (it causes scroll lock bug)
+    const btn = document.getElementById('proceedToCakeBtn');
+    if (btn) {
+        // Pulse animation via class, not inline style that overrides transform
+        btn.classList.add('timeline-btn-pulse');
+
+        btn.addEventListener('click', () => {
+            btn.disabled = true;
+            btn.innerText = '🎂 Loading Cake...';
+
+            // Fade out the whole container
+            timelineContainer.style.opacity = '0';
+            timelineContainer.style.transform = 'translateY(60px)';
+            timelineContainer.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+
+            setTimeout(() => {
+                timelineContainer.remove();
+                if (typeof init3DCake === 'function') {
+                    init3DCake();
+                } else {
+                    console.error('init3DCake function not found!');
+                }
+            }, 900);
+        });
+    }
 }

@@ -1631,41 +1631,43 @@
 
   /* Premium Glassmorphism Timeline Styles */
   #timeline-container {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(10, 5, 20, 0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(10, 5, 20, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       z-index: 10000;
       overflow-y: auto;
-      padding: 60px 20px;
+      overflow-x: hidden;
+      padding: 60px 20px 0 20px;
+      box-sizing: border-box;
       color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      scroll-behavior: smooth;
   }
-  
+
   .timeline-title {
       font-family: 'Pacifico', cursive;
-      font-size: 3.5rem;
+      font-size: clamp(2rem, 5vw, 3.5rem);
       color: #fff;
       margin-bottom: 60px;
       text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493;
       letter-spacing: 2px;
       text-align: center;
+      flex-shrink: 0;
   }
-  
+
   .timeline {
       position: relative;
       max-width: 900px;
       width: 100%;
       margin: 0 auto;
   }
-  
+
   .timeline::after {
       content: '';
       position: absolute;
@@ -1679,7 +1681,7 @@
       border-radius: 2px;
       z-index: 0;
   }
-  
+
   .timeline-item {
       box-sizing: border-box;
       padding: 10px 40px;
@@ -1689,15 +1691,15 @@
       margin-bottom: 30px;
       z-index: 1;
   }
-  
+
   .timeline-item.left {
       left: 0;
   }
-  
+
   .timeline-item.right {
       left: 50%;
   }
-  
+
   .timeline-item::after {
       content: '';
       position: absolute;
@@ -1713,7 +1715,7 @@
       box-shadow: 0 0 15px rgba(255,105,180,1), inset 0 0 5px rgba(255,20,147,0.5);
       transition: all 0.3s ease;
   }
-  
+
   .timeline-item.right::after {
       left: -12px;
   }
@@ -1723,10 +1725,10 @@
       box-shadow: 0 0 25px rgba(255,105,180,1);
       transform: translateY(-50%) scale(1.2);
   }
-  
+
   .timeline-content {
       padding: 30px;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.06);
       border-radius: 20px;
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
@@ -1736,39 +1738,54 @@
       position: relative;
       overflow: hidden;
   }
-  
+
   .timeline-content:hover {
       transform: translateY(-5px);
       box-shadow: 0 15px 45px 0 rgba(255, 20, 147, 0.4);
       border-color: rgba(255, 105, 180, 0.8);
   }
-  
+
+  .timeline-year {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff69b4, #ff1493);
+      color: white;
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+  }
+
   .timeline-content h3 {
       font-family: 'Dancing Script', cursive;
       color: #ffb6c1;
-      font-size: 2.2rem;
-      margin-bottom: 10px;
+      font-size: 2rem;
+      margin: 8px 0 10px 0;
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
   }
-  
-  .timeline-img-placeholder {
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(135deg, rgba(255,105,180,0.1), rgba(255,20,147,0.2));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 15px;
-      border-radius: 12px;
-      font-style: italic;
-      color: rgba(255,255,255,0.7);
-      border: 1px dashed rgba(255,105,180,0.5);
+
+  .timeline-content p {
+      color: rgba(255,255,255,0.85);
+      line-height: 1.6;
   }
-  
+
+  /* Button wrapper — sticky at the bottom so it's always reachable */
+  .timeline-btn-wrapper {
+      position: sticky;
+      bottom: 0;
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      justify-content: center;
+      padding: 30px 0;
+      background: linear-gradient(to top, rgba(10,5,20,0.95) 60%, transparent);
+      flex-shrink: 0;
+      z-index: 100;
+  }
+
   .timeline-btn {
-      margin-top: 60px;
-      margin-bottom: 40px;
-      padding: 18px 40px;
+      padding: 18px 50px;
       font-size: 1.5rem;
       background: linear-gradient(135deg, #ff69b4, #ff1493);
       color: white;
@@ -1776,21 +1793,31 @@
       border-radius: 50px;
       cursor: pointer;
       font-family: 'Pacifico', cursive;
-      box-shadow: 0 10px 20px rgba(255,105,180,0.4), inset 0 -3px 0 rgba(0,0,0,0.2);
+      box-shadow: 0 10px 30px rgba(255,105,180,0.5), 0 0 40px rgba(255,20,147,0.3);
       transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       z-index: 2;
+      white-space: nowrap;
   }
-  
+
   .timeline-btn:hover {
       transform: translateY(-5px) scale(1.05);
-      box-shadow: 0 15px 30px rgba(255,105,180,0.6), inset 0 -3px 0 rgba(0,0,0,0.2);
+      box-shadow: 0 20px 40px rgba(255,105,180,0.7);
   }
-  
+
   .timeline-btn:active {
       transform: translateY(2px) scale(0.98);
-      box-shadow: 0 5px 10px rgba(255,105,180,0.4);
   }
-  
+
+  /* Pulse uses box-shadow instead of transform so it doesn't conflict with hover */
+  .timeline-btn-pulse {
+      animation: btnPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes btnPulse {
+      0%, 100% { box-shadow: 0 10px 30px rgba(255,105,180,0.5), 0 0 40px rgba(255,20,147,0.3); }
+      50% { box-shadow: 0 10px 30px rgba(255,105,180,0.8), 0 0 80px rgba(255,20,147,0.7), 0 0 120px rgba(255,105,180,0.4); }
+  }
+
   .hidden {
       display: none !important;
   }
