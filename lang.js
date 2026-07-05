@@ -1,5 +1,7 @@
-// English-only translations for Zahra's Birthday Website
+// Bilingual translations for Zahra's Birthday Website
 // Created by geniusinsanity
+
+let currentLang = localStorage.getItem('lang') || 'en';
 
 const translations = {
     en: {
@@ -56,29 +58,84 @@ const translations = {
         addNewPage: "➕ Add New Page",
         emptyPage: "Empty page",
         endOfBook: "End of book"
+    },
+    fr: {
+        title: "Joyeux Anniversaire Zahra 🎁",
+        description: "Une surprise spéciale pour Zahra ! Cliquez pour voir le message !",
+        login: "Se connecter avec Google",
+        logout: "Déconnexion",
+        settings: "Paramètres du site",
+        music: "Paramètres de la musique",
+        backgroundMusic: "Musique de fond :",
+        countdown: "Paramètres du compte à rebours",
+        countdownTime: "Temps du compte à rebours :",
+        matrix: "Paramètres de l'effet Matrix",
+        matrixText: "Texte principal Matrix :",
+        matrixColor1: "Couleur Matrix 1 :",
+        matrixColor2: "Couleur Matrix 2 :",
+        sequence: "Paramètres du texte principal",
+        sequenceText: "Contenu du texte principal :",
+        sequenceColor: "Couleur du texte principal :",
+        gift: "Paramètres de l'image animée",
+        giftImage: "Image animée (optionnel) :",
+        enableBook: "Afficher le livre :",
+        book: "Paramètres des pages du livre",
+        enableHeart: "Afficher l'effet cœur :",
+        note: "⏳ Profitez de ce site d'anniversaire spécial !",
+        follow: "💝 Ce site spécial a été créé avec amour par geniusinsanity",
+        apply: "Appliquer les paramètres",
+        copyright: 'Fait avec 💕 par geniusinsanity pour l\'anniversaire de Zahra',
+        fullscreen: "Plein écran",
+        on: "Activé",
+        off: "Désactivé",
+        sec3: "3 secondes",
+        sec5: "5 secondes",
+        sec10: "10 secondes",
+        noGif: "Aucun",
+        colorTheme: "Choisir la couleur :",
+        settingsHint: "cliquez ici pour personnaliser",
+        pinkTheme: "Rose Doux",
+        blueTheme: "Bleu Frais",
+        purpleTheme: "Violet Rêveur",
+        customTheme: "Couleur Personnalisée",
+        noteSequence: "Note : Séparez les mots par | et ne faites pas de ligne trop longue",
+        noteExpire: "⏳ <b>Note:</b> Profitez de cette surprise ! 🎉",
+        followNote: "💝 Ce site spécial a été créé avec amour par geniusinsanity",
+        notVietnamWarning: '🎉 Joyeux Anniversaire Zahra ! En te souhaitant une merveilleuse journée pleine de joie et d\'amour ! 💕',
+        pageTitleCover: "Page {num} (Couverture)",
+        pageTitle: "Page {num}",
+        imageLabel: "Image :",
+        coverPlaceholder: "Couverture du livre",
+        pagePlaceholder: "Page {num}",
+        noImageAlt: "Pas encore d'image - {placeholder}",
+        contentLabel: "Contenu :",
+        contentPlaceholder: "Entrez le contenu pour la page {num}",
+        addNewPage: "➕ Ajouter une nouvelle page",
+        emptyPage: "Page vide",
+        endOfBook: "Fin du livre"
     }
 };
 
 function setLanguage(lang) {
-    // Always use English
-    lang = 'en';
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
     document.documentElement.lang = lang;
     
     // Set title and meta
-    document.title = translations.en.title;
-    document.querySelector('meta[name="description"]').setAttribute('content', translations.en.description);
+    document.title = translations[lang].title;
+    document.querySelector('meta[name="description"]').setAttribute('content', translations[lang].description);
 
     // Update all elements with data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (translations.en[key]) {
+        if (translations[lang][key]) {
             if (
-                translations.en[key].includes('<b>') ||
-                translations.en[key].includes('<a')
+                translations[lang][key].includes('<b>') ||
+                translations[lang][key].includes('<a')
             ) {
-                el.innerHTML = translations.en[key];
+                el.innerHTML = translations[lang][key];
             } else {
-                el.innerText = translations.en[key];
+                el.innerText = translations[lang][key];
             }
         }
     });
@@ -86,29 +143,34 @@ function setLanguage(lang) {
     // Update placeholders
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
-        if (translations.en[key]) {
-            el.setAttribute('placeholder', translations.en[key]);
+        if (translations[lang][key]) {
+            el.setAttribute('placeholder', translations[lang][key]);
         }
     });
-}
 
-// Simplified - no language switching needed
-function switchLanguage() {
-    // Do nothing - always English
-    return;
-}
-
-// Initialize language on page load
-document.addEventListener('DOMContentLoaded', () => {
-    setLanguage('en');
-    // Remove language switch button if it exists
+    // Update lang button text if exists
     const langBtn = document.getElementById('langSwitchBtn');
-    if (langBtn) langBtn.remove();
+    if (langBtn) {
+        langBtn.innerText = lang === 'en' ? 'FR' : 'EN';
+    }
+}
+
+function switchLanguage() {
+    const newLang = currentLang === 'en' ? 'fr' : 'en';
+    setLanguage(newLang);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    setLanguage(currentLang);
+    
+    const langBtn = document.getElementById('langSwitchBtn');
+    if (langBtn) {
+        langBtn.addEventListener('click', switchLanguage);
+    }
 });
 
 function t(key, vars = {}) {
-    // Always use English
-    let str = (translations.en && translations.en[key]) || key;
+    let str = (translations[currentLang] && translations[currentLang][key]) || key;
     Object.keys(vars).forEach(k => {
         str = str.replace(`{${k}}`, vars[k]);
     });
