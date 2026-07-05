@@ -30,6 +30,19 @@ function init3DCake() {
     title.style.marginBottom = '20px';
     container.appendChild(title);
 
+    // Fallback if Three.js fails to load from CDN
+    if (typeof THREE === 'undefined') {
+        const errorMsg = document.createElement('h3');
+        errorMsg.innerText = "Hmm, the 3D cake couldn't load right now. But you can still click here to make your wish!";
+        errorMsg.style.color = '#ff69b4';
+        errorMsg.style.zIndex = '501';
+        container.appendChild(errorMsg);
+        
+        // Still allow click to trigger fireworks
+        container.addEventListener('click', blowOutCandleFallback);
+        return;
+    }
+
     // Three.js Setup
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -126,6 +139,10 @@ function checkBlow() {
 
 function blowOutCandle() {
     candleFlame.visible = false;
+    blowOutCandleFallback();
+}
+
+function blowOutCandleFallback() {
     // Launch fireworks from ui.js
     if (typeof showFirework === 'function') {
         showFirework();
@@ -135,6 +152,7 @@ function blowOutCandle() {
 
     setTimeout(() => {
         isCakeActive = false;
-        document.getElementById('cake-container').remove();
+        const container = document.getElementById('cake-container');
+        if (container) container.remove();
     }, 4000);
 }

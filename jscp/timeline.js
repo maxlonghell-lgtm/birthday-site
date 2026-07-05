@@ -39,10 +39,19 @@ function initTimeline() {
     timelineContainer.innerHTML = html;
     document.body.appendChild(timelineContainer);
 
-    // Fade in timeline
+    // Fade in timeline and scroll to bottom button later
     setTimeout(() => {
         timelineContainer.classList.remove('hidden');
         timelineContainer.classList.add('fade-in-up');
+        
+        // Auto scroll down slowly to reveal the button after they read the timeline
+        setTimeout(() => {
+            const btn = document.getElementById('proceedToCakeBtn');
+            if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            
+            // Highlight button
+            btn.style.animation = 'pulse 2s infinite';
+        }, 5000); // Scroll down after 5 seconds
     }, 500);
 
     // Event listener for next phase

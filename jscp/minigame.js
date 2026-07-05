@@ -132,6 +132,17 @@ function startMiniGame() {
         basket.style.left = basketX + '%';
     }, { passive: false });
 
+    // Mouse control support
+    gameArea.addEventListener('mousemove', (e) => {
+        if (isGameOver) return;
+        const rect = gameArea.getBoundingClientRect();
+        let x = ((e.clientX - rect.left) / rect.width) * 100;
+        if (x < 8) x = 8;
+        if (x > 92) x = 92;
+        basketX = x;
+        basket.style.left = basketX + '%';
+    });
+
     function spawnGift() {
         const gift = document.createElement('div');
         gift.innerText = '🎁';
