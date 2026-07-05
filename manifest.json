@@ -1,0 +1,21 @@
+{
+  "name": "Zahra's Birthday",
+  "short_name": "Happy BDay",
+  "description": "A beautiful interactive birthday surprise!",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "background_color": "#000000",
+  "theme_color": "#ff69b4",
+  "icons": [
+    {
+      "src": "./image/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./image/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
