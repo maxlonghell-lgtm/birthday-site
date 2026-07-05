@@ -13,16 +13,17 @@ function init3DCake() {
     container.style.left = '0';
     container.style.width = '100%';
     container.style.height = '100%';
-    container.style.zIndex = '500';
+    container.style.zIndex = '99999'; // Forced to top
     container.style.background = 'rgba(0, 0, 0, 0.85)';
     container.style.display = 'flex';
     container.style.flexDirection = 'column';
     container.style.justifyContent = 'center';
     container.style.alignItems = 'center';
+    container.style.cursor = 'pointer'; // Hint for click fallback
     document.body.appendChild(container);
 
     const title = document.createElement('h2');
-    title.innerText = "Blow on your microphone to make a wish!";
+    title.innerText = "Blow on your mic (or click) to make a wish! 🎂";
     title.style.color = 'white';
     title.style.fontFamily = 'Pacifico, cursive';
     title.style.zIndex = '501';
@@ -86,6 +87,11 @@ function animateCake() {
 }
 
 async function initMicrophone() {
+    // Add global click listener fallback immediately
+    document.getElementById('cake-container').addEventListener('click', () => {
+        if (isCakeActive && candleFlame.visible) blowOutCandle();
+    });
+
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -97,8 +103,7 @@ async function initMicrophone() {
         checkBlow();
     } catch (e) {
         console.warn("Microphone access denied or not available", e);
-        // Fallback: click to blow out
-        document.getElementById('cake-container').addEventListener('click', blowOutCandle);
+        // Fallback already handled by click listener
     }
 }
 

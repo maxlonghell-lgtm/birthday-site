@@ -62,12 +62,12 @@ function drawVisualizer() {
     let x = 0;
     
     for (let i = 0; i < dataArray.length; i++) {
-        barHeight = dataArray[i] / 2;
+        barHeight = dataArray[i] / 1.2; // Taller bars
         
-        // Star matching glow style
-        visualizerCtx.shadowBlur = 15;
-        visualizerCtx.shadowColor = 'rgba(255, 255, 255, 0.8)';
-        visualizerCtx.fillStyle = `rgba(255, ${255 - barHeight}, ${255 - barHeight}, 0.6)`;
+        // Premium star matching glow style
+        visualizerCtx.shadowBlur = 20;
+        visualizerCtx.shadowColor = 'rgba(255, 105, 180, 0.9)'; // Pink glow
+        visualizerCtx.fillStyle = `rgba(255, 255, 255, 0.9)`; // Solid white core
         
         // Draw centered vertically at the bottom
         visualizerCtx.fillRect(x, visualizerCanvas.height - barHeight, barWidth, barHeight);
@@ -76,15 +76,10 @@ function drawVisualizer() {
     }
 }
 
-// Attach to music control to ensure audio context resumes
-document.addEventListener('DOMContentLoaded', () => {
-    const musicBtn = document.getElementById('musicControl');
-    if (musicBtn) {
-        musicBtn.addEventListener('click', () => {
-            if (!isVisualizerInit) initVisualizer();
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        });
+// Trigger on any interaction to bypass browser autoplay restrictions
+document.addEventListener('click', () => {
+    if (!isVisualizerInit) initVisualizer();
+    if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
     }
-});
+}, { once: false });
