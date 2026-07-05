@@ -1050,13 +1050,6 @@ applySettingsButton.addEventListener('click', () => {
         }
     }
 
-    const totalPages = settings.pages.length;
-
-    if (totalPages > 1 && totalPages % 2 === 0) {
-        alert(`❌ ${t('invalidPageStructure')}\n\n${t('currentPages', {total: totalPages})}\n${t('bookStructureGuide')}\n\n${t('pleaseAddOrRemovePage')}`);
-
-        return;
-    }
 
     settings.music = document.getElementById('backgroundMusic')?.value || settings.music;
     settings.countdown = parseInt(document.getElementById('countdownTime')?.value) || settings.countdown || 3;

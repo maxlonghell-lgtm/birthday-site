@@ -1838,3 +1838,8 @@
       0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
       50% { opacity: 0.6; transform: translateX(-50%) scale(1.1); }
   }
+
+  @keyframes fadeOutScale {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.1); }
+  }
