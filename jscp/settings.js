@@ -421,18 +421,18 @@ function populateModal() {
     addCustomColorListeners();
 
     const pageConfigs = document.getElementById('pageConfigs');
-    pageConfigs.innerHTML = '';
+    if (pageConfigs) pageConfigs.innerHTML = '';
 
     enableBookSelect.addEventListener('change', function () {
         const bookSettingsSection = document.getElementById('bookSettingsSection');
         const enableHeartSelect = document.getElementById('enableHeart');
 
         if (this.value === 'true') {
-            bookSettingsSection.style.display = 'block';
+            if (bookSettingsSection) bookSettingsSection.style.display = 'block';
 
             enableHeartSelect.disabled = false;
         } else {
-            bookSettingsSection.style.display = 'none';
+            if (bookSettingsSection) bookSettingsSection.style.display = 'none';
 
             enableHeartSelect.value = 'false';
             enableHeartSelect.disabled = true;
@@ -577,7 +577,7 @@ if (index === 0) {
             pageConfig.appendChild(contentTextarea);
         }
 
-        pageConfigs.appendChild(pageConfig);
+        if (pageConfigs) pageConfigs.appendChild(pageConfig);
     });
 
     if (settings.pages.length < 19) {
@@ -594,7 +594,7 @@ if (index === 0) {
                     font-size: 14px;
                     margin-top: 10px;
                 `;
-        pageConfigs.appendChild(addPageButton);
+        if (pageConfigs) pageConfigs.appendChild(addPageButton);
     }
 
     matrixColor1Input.addEventListener('input', () => {

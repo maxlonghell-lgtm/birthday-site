@@ -905,20 +905,6 @@ function showFloatingHearts() {
     spawnHeart();
 }
 
-// Add simple click-to-open for the hand icon hint
-document.addEventListener('DOMContentLoaded', () => {
-    const hint = document.querySelector('.open-hint');
-    if (hint) {
-        hint.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (!isFlipping) {
-                nextPage();
-            }
-        });
-        // Also make it look clickable
-        hint.style.cursor = 'pointer';
-    }
-});
 
 function showBook() {
 
@@ -952,6 +938,32 @@ function showBook() {
             });
         });
     }
+
+    // Add pulsing "Tap to Open" hint on the book cover
+    const tapHint = document.createElement('div');
+    tapHint.id = 'book-tap-hint';
+    tapHint.innerText = '👆 Tap to Open';
+    tapHint.style.position = 'absolute';
+    tapHint.style.bottom = '15%';
+    tapHint.style.left = '50%';
+    tapHint.style.transform = 'translateX(-50%)';
+    tapHint.style.color = 'white';
+    tapHint.style.fontFamily = 'Dancing Script, cursive';
+    tapHint.style.fontSize = '1.3rem';
+    tapHint.style.textShadow = '0 0 10px #ff69b4, 0 0 20px #ff1493';
+    tapHint.style.animation = 'pulse 2s infinite';
+    tapHint.style.zIndex = '400';
+    tapHint.style.pointerEvents = 'none';
+    bookContainer.appendChild(tapHint);
+
+    // Simple click on the book opens the first page
+    book.addEventListener('click', (e) => {
+        if (!isFlipping && currentPage === 0) {
+            const hint = document.getElementById('book-tap-hint');
+            if (hint) hint.remove();
+            nextPage();
+        }
+    });
 
 }
 function hexToRgb(hex) {
@@ -1380,7 +1392,7 @@ function handleSwipeEnd(deltaX, deltaY, deltaTime) {
         page.style.transform = '';
         page.style.boxShadow = '';
     });
-    const swipeThreshold = 50;
+    const swipeThreshold = 25;
     const velocity = Math.abs(deltaX) / deltaTime;
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > swipeThreshold) {
         if (deltaX < 0) {
