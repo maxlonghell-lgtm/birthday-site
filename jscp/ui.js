@@ -5,7 +5,6 @@ const confettiPool = [];
 const maxConfetti = 50;
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-
 function createConfetti() {
     const confetti = document.createElement("div");
     confetti.className = "confetti";
@@ -19,15 +18,13 @@ function getConfettiFromPool() {
     return createConfetti();
 }
 
-// ✅ FIX 1: Thêm function để force resize matrix canvas
 function forceResizeMatrix() {
     const matrixCanvas = document.getElementById('matrix-rain');
     if (matrixCanvas) {
-        // Force resize canvas to current window size
+
         matrixCanvas.width = window.innerWidth;
         matrixCanvas.height = window.innerHeight;
 
-        // Restart matrix rain with new dimensions
         if (matrixInterval) {
             clearInterval(matrixInterval);
             matrixInterval = null;
@@ -40,7 +37,6 @@ function returnConfettiToPool(confetti) {
     confetti.remove();
     confettiPool.push(confetti);
 }
-
 
 function checkOrientation() {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -70,7 +66,6 @@ function checkOrientation() {
             if (book) book.style.display = 'block';
             startWebsite();
 
-            // ✅ FIX 2: Force resize matrix khi chuyển sang landscape
             setTimeout(() => {
                 forceResizeMatrix();
             }, 100);
@@ -93,7 +88,6 @@ function checkOrientation() {
                 if (book) book.style.display = 'block';
                 startWebsite();
 
-                // ✅ FIX 3: Force resize matrix khi orientation change
                 setTimeout(() => {
                     forceResizeMatrix();
                 }, 100);
@@ -115,7 +109,7 @@ function startWebsite() {
     if (typeof resetWebsiteState === 'function') {
         resetWebsiteState();
     }
-    S.init(); // luôn chạy lại hiệu ứng
+    S.init(); 
     S.initialized = true;
 }
 
@@ -136,16 +130,13 @@ function initMatrixRain() {
     const matrixCanvas = document.getElementById('matrix-rain');
     const matrixCtx = matrixCanvas.getContext('2d');
 
-    // ✅ FIX 4: Force set canvas size to current window dimensions
     matrixCanvas.width = window.innerWidth;
     matrixCanvas.height = window.innerHeight;
 
-    // Detect mobile
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    // Điều chỉnh fontSize và tốc độ cho mobile
     const fontSize = isMobile ? 13 : 25;
-    const intervalTime = isMobile ? 44 : 50; // mobile chạy chậm hơn
+    const intervalTime = isMobile ? 44 : 50; 
 
     const columns = Math.floor(matrixCanvas.width / fontSize);
     const drops = [];
@@ -206,9 +197,8 @@ function initMatrixRain() {
 
     matrixInterval = setInterval(drawMatrixRain, intervalTime);
 
-    // ✅ FIX 5: Improve resize handler
     window.addEventListener('resize', () => {
-        // Debounce resize events
+
         clearTimeout(window.matrixResizeTimeout);
         window.matrixResizeTimeout = setTimeout(() => {
             matrixCanvas.width = window.innerWidth;
@@ -216,7 +206,6 @@ function initMatrixRain() {
             const newColumns = Math.floor(matrixCanvas.width / fontSize);
             const newMaxLength = Math.floor(matrixCanvas.height / fontSize) + 2;
 
-            // Reset arrays with new dimensions
             drops.length = 0;
             columnColors.length = 0;
             delays.length = 0;
@@ -245,17 +234,9 @@ S = {
             i = action.indexOf('?websiteId=');
 
         if (i !== -1) {
-            //  S.UI.simulate('');
-            // S.UI.simulate(decodeURI(action).substring(i + 3));
-            // console.log('Simulating action from URL:', decodeURI(action).substring(i + 3));
-            // console.log(window.settings);
+
         } else {
-            // // // ✅ Sử dụng sequence từ settings thay vì hardcode
-            // const currentSettings = window.settings;
-            // const countdownValue = currentSettings.countdown;
-            // const sequenceText = currentSettings.sequence;
-            // const sequence = `|#countdown ${countdownValue}|${sequenceText}|#gift|`;
-            // S.UI.simulate(sequence);
+
         }
 
         S.Drawing.init('.canvas');
@@ -309,7 +290,7 @@ S.Drawing = (function () {
         },
 
         getArea: function () {
-            // ✅ Kiểm tra canvas trước khi truy cập
+
             if (!canvas) {
                 console.warn('Canvas not initialized, returning default area');
                 return { w: window.innerWidth || 800, h: window.innerHeight || 600 };
@@ -385,7 +366,7 @@ S.UI = (function () {
         function getDynamicDelay(str) {
             const base = isMobile ? 1700 : 1900;
             if (!str || typeof str !== 'string') return base;
-            // Nếu là lệnh (bắt đầu bằng #), không cộng thêm thời gian
+
             if (str.trim().startsWith('#')) return base;
             const extra = Math.max(0, (str.length - 5) * 100);
             if (extra > 0) {
@@ -398,7 +379,6 @@ S.UI = (function () {
             action = getAction(current);
             value = getValue(current);
 
-            // Tính delay động cho từng action
             const actionDelay = getDynamicDelay(current);
 
             switch (action) {
@@ -537,7 +517,6 @@ S.Color.prototype = {
     }
 };
 
-// Cập nhật S.Dot với kích thước nhỏ hơn
 S.Dot = function (x, y) {
     this.p = new S.Point({
         x: x,
@@ -555,14 +534,14 @@ S.Dot = function (x, y) {
     this.q = [];
 };
 S.Dot.prototype = {
-    // Thêm method để tính kích thước dot dựa trên thiết bị
+
     getDotSize: function () {
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
         if (isMobile) {
-            return 2; // Dots nhỏ hơn cho mobile
+            return 2; 
         } else {
-            return 4; // Dots vừa phải cho desktop
+            return 4; 
         }
     },
 
@@ -577,7 +556,7 @@ S.Dot.prototype = {
     },
 
     _draw: function () {
-        // Cập nhật màu theo settings hiện tại mỗi khi vẽ
+
         const currentSettings = window.settings || settings;
         const rgb = hexToRgb(currentSettings.sequenceColor);
         this.c.r = rgb.r;
@@ -667,16 +646,14 @@ S.ShapeBuilder = (function () {
         shapeContext = shapeCanvas.getContext('2d'),
         fontSize = 500,
         fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
-    //    fontFamily = 'Pacifico, Arial, sans-serif';
 
-    // Điều chỉnh gap dựa trên thiết bị
     function getGap() {
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
         if (isMobile) {
-            return 4; // Gap nhỏ hơn cho mobile = dots dày đặc hơn
+            return 4; 
         } else {
-            return 8; // Gap vừa phải cho desktop
+            return 8; 
         }
     }
 
@@ -700,7 +677,6 @@ S.ShapeBuilder = (function () {
             w = 0,
             h = 0;
 
-        // Sử dụng gap động để tạo nhiều dots hơn
         for (var p = 0; p < pixels.length; p += (4 * gap)) {
             if (pixels[p + 3] > 0) {
                 dots.push(new S.Point({
@@ -755,12 +731,12 @@ S.ShapeBuilder = (function () {
 
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             const isSmallScreen = window.innerWidth < 768;
-            const baseFontSize = (isMobile || isSmallScreen) ? 250 : 500; // Giảm font size cho mobile
+            const baseFontSize = (isMobile || isSmallScreen) ? 250 : 500; 
 
             setFontSize(baseFontSize);
             s = Math.min(baseFontSize,
                 (shapeCanvas.width / shapeContext.measureText(l).width) * 0.8 * baseFontSize,
-                (shapeCanvas.height / baseFontSize) * (isNumber(l) ? 0.8 : 0.35) * baseFontSize); // Giảm tỷ lệ cho mobile
+                (shapeCanvas.height / baseFontSize) * (isNumber(l) ? 0.8 : 0.35) * baseFontSize); 
 
             setFontSize(s);
             shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
@@ -770,7 +746,6 @@ S.ShapeBuilder = (function () {
     };
 }());
 
-// Cập nhật S.Shape với logic tạo dots tối ưu
 S.Shape = (function () {
     var dots = [],
         width = 0,
@@ -790,10 +765,10 @@ S.Shape = (function () {
 
         if (isMobile || isSmallScreen) {
             return {
-                minSize: 1,      // Giảm từ 2 xuống 1
-                maxSize: 4,      // Giảm từ 8 xuống 4
-                minZ: 2,         // Giảm từ 3 xuống 2
-                maxZ: 3          // Giảm từ 6 xuống 3
+                minSize: 1,      
+                maxSize: 4,      
+                minZ: 2,         
+                maxZ: 3          
             };
         } else {
             return {
@@ -827,7 +802,7 @@ S.Shape = (function () {
             while (n.dots.length > 0) {
                 i = Math.floor(Math.random() * n.dots.length);
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                dots[d].e = isMobile ? 0.35 : 0.11; // Tăng tốc độ di chuyển cho mobile
+                dots[d].e = isMobile ? 0.35 : 0.11; 
 
                 if (dots[d].s) {
                     dots[d].move(new S.Point({
@@ -883,10 +858,8 @@ S.Shape = (function () {
     };
 }());
 
-
-// 4. Tối ưu hóa floating hearts
 const heartPool = [];
-const maxFloatingHearts = 25; // Giảm từ 40 xuống 25
+const maxFloatingHearts = 25; 
 
 function createFloatingHeart() {
     const heart = document.createElement('div');
@@ -922,38 +895,31 @@ function showFloatingHearts() {
         document.body.appendChild(heart);
         heartCount++;
 
-        // Cleanup sau 10 giây
         setTimeout(() => returnHeartToPool(heart), 10000);
 
-        // Spawn tiếp theo
         if (heartCount < maxFloatingHearts) {
-            setTimeout(spawnHeart, 1600); // Giảm delay
+            setTimeout(spawnHeart, 1600); 
         }
     }
 
     spawnHeart();
 }
 
-// 5. Tối ưu hóa hiệu ứng mở sách
 function showBook() {
 
     const book = document.getElementById('book');
     const bookContainer = document.querySelector('.book-container');
 
-    // Hiển thị sao một lần
     showStars();
     if (book && bookContainer) {
         bookContainer.style.display = 'block';
         bookContainer.classList.add('show');
         book.style.display = 'block';
 
-        // ✅ FIX: Tính toán z-index cho tất cả pages
         calculatePageZIndexes();
-        
-        // ✅ FIX: Thiết lập observer để theo dõi thay đổi cấu trúc book
+
         setupPageObserver();
 
-        // Batch DOM updates
         requestAnimationFrame(() => {
             book.style.opacity = '0';
             book.style.transform = 'scale(0.8) translateY(50px)';
@@ -962,7 +928,7 @@ function showBook() {
             requestAnimationFrame(() => {
                 book.style.opacity = '1';
                 book.style.transform = 'scale(1) translateY(0)';
-                // Delay music toggle
+
                 setTimeout(() => {
                     if (!isPlaying) {
                         toggleMusic();
@@ -982,7 +948,6 @@ function hexToRgb(hex) {
     } : { r: 211, g: 155, b: 155 };
 }
 
-
 const book = document.getElementById('book');
 const contentDisplay = document.getElementById('contentDisplay');
 const contentText = document.getElementById('contentText');
@@ -995,7 +960,6 @@ let photoUrls = pages.filter(page => page.image).map(page => page.image);
 function showConfetti() {
     const confettiColors = ['#ff6f91', '#ff9671', '#ffc75f', '#f9f871', '#ff3c78'];
 
-    // Sử dụng requestAnimationFrame thay vì loop trực tiếp
     let confettiCount = 0;
     function spawnConfetti() {
         if (confettiCount >= maxConfetti) return;
@@ -1008,14 +972,12 @@ function showConfetti() {
         confetti.style.top = (window.innerHeight / 2) + 'px';
         document.body.appendChild(confetti);
 
-        // Sử dụng setTimeout tối ưu hơn
         setTimeout(() => returnConfettiToPool(confetti), 1000);
 
         confettiCount++;
 
-        // Spawn tiếp theo với delay nhỏ hơn
         if (confettiCount < maxConfetti) {
-            setTimeout(spawnConfetti, 20); // Giảm delay
+            setTimeout(spawnConfetti, 20); 
         }
     }
 
@@ -1028,23 +990,20 @@ function showFirework() {
         fireworkContainer = document.getElementById('fireworkContainer');
     }
 
-    // Xóa nội dung cũ một cách hiệu quả
     fireworkContainer.innerHTML = '';
     fireworkContainer.style.opacity = 1;
 
-    // Sử dụng DocumentFragment để tối ưu DOM manipulation
     const fragment = document.createDocumentFragment();
 
-    for (let i = 0; i < 20; i++) { // Giảm từ 30 xuống 20
+    for (let i = 0; i < 20; i++) { 
         const fw = document.createElement('div');
         fw.className = 'firework';
-        fw.style.transform = `rotate(${i * 18}deg) translateY(-40px)`; // Tăng góc để bù trừ việc giảm số lượng
+        fw.style.transform = `rotate(${i * 18}deg) translateY(-40px)`; 
         fragment.appendChild(fw);
     }
 
     fireworkContainer.appendChild(fragment);
 
-    // Sử dụng requestAnimationFrame cho smooth animation
     requestAnimationFrame(() => {
         setTimeout(() => {
             fireworkContainer.style.opacity = 0;
@@ -1052,8 +1011,6 @@ function showFirework() {
     });
 }
 
-
-// 3. Tối ưu hóa hiệu ứng trái tim ảnh với throttling
 const photoCache = new Map();
 let heartPhotosCreated = 0;
 const maxHeartPhotos = 30;
@@ -1080,32 +1037,27 @@ function createHeartPhotoCentered(idx, total) {
     photo.className = 'photo';
     photo.style.zIndex = '300';
 
-    // Tối ưu hóa vị trí tính toán
     const centerX = window.innerWidth * 0.5;
     const centerY = window.innerHeight * 0.5;
     const t = (idx / total) * 2 * Math.PI;
 
-    // Tối ưu hóa scale calculation
     const isLandscapeMobile = window.innerHeight <= 500 && window.innerWidth > window.innerHeight;
     const scale = isLandscapeMobile ? 8 : 16;
 
-    // Tính toán vị trí heart shape
     const sin_t = Math.sin(t);
     const cos_t = Math.cos(t);
     const targetX = scale * 16 * Math.pow(sin_t, 3);
     const targetY = -scale * (13 * cos_t - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
 
-    // Set initial position
     photo.style.left = centerX + 'px';
     photo.style.top = centerY + 'px';
     photo.style.opacity = '0';
     photo.style.transform = 'translate(-50%, -50%) scale(0)';
-    photo.style.transition = 'all 1.5s ease-out'; // Giảm thời gian transition
+    photo.style.transition = 'all 1.5s ease-out'; 
 
     document.body.appendChild(photo);
     heartPhotosCreated++;
 
-    // Sử dụng requestAnimationFrame cho smooth animation
     requestAnimationFrame(() => {
         photo.style.opacity = '1';
         photo.style.transform = 'translate(-50%, -50%) scale(1)';
@@ -1117,40 +1069,33 @@ function createHeartPhotoCentered(idx, total) {
 function spawnHeartPhotosCentered() {
     heartPhotosCreated = 0;
 
-    // Preload tất cả ảnh trước
     photoUrls.forEach(url => preloadPhoto(url));
 
-    // Sử dụng requestAnimationFrame để tạo animation mượt mà hơn
     let currentIndex = 0;
     function spawnNext() {
         if (currentIndex < maxHeartPhotos) {
             createHeartPhotoCentered(currentIndex, maxHeartPhotos);
             currentIndex++;
 
-            // Giảm delay giữa các ảnh
             setTimeout(() => {
                 requestAnimationFrame(spawnNext);
-            }, 80); // Giảm từ 100ms xuống 80ms
+            }, 80); 
         }
     }
 
     spawnNext();
 }
 
-
-// 7. Tối ưu hóa startHeartEffect
 function startHeartEffect() {
     const currentSettings = window.settings || settings;
     if (!currentSettings.enableHeart) {
         return;
     }
 
-    // Batch DOM updates
     const book = document.getElementById('book');
     const bookContainer = document.querySelector('.book-container');
     const contentDisplay = document.getElementById('contentDisplay');
 
-    // Hide elements efficiently
     if (book) {
         book.style.display = 'none';
         book.classList.remove('show');
@@ -1163,7 +1108,6 @@ function startHeartEffect() {
         contentDisplay.classList.remove('show');
     }
 
-    // Stagger effects để tránh blocking
     requestAnimationFrame(() => {
         setTimeout(() => {
             showConfetti();
@@ -1246,7 +1190,6 @@ function prevPage() {
     }
 }
 
-// 6. Tối ưu hóa typewriter effect
 function typewriterEffect(element, text, speed = 50) {
     return new Promise((resolve) => {
         element.innerHTML = '';
@@ -1258,9 +1201,8 @@ function typewriterEffect(element, text, speed = 50) {
                 element.innerHTML += text.charAt(i);
                 i++;
 
-                // Throttle scroll updates
                 const now = Date.now();
-                if (now - lastScrollTime > 100) { // Chỉ scroll mỗi 100ms
+                if (now - lastScrollTime > 100) { 
                     const container = element.closest('.content-display');
                     if (container && container.scrollHeight > container.clientHeight) {
                         container.scrollTop = container.scrollHeight - container.clientHeight;
@@ -1268,7 +1210,6 @@ function typewriterEffect(element, text, speed = 50) {
                     lastScrollTime = now;
                 }
 
-                // Sử dụng requestAnimationFrame thay vì setTimeout khi có thể
                 if (speed < 16) {
                     requestAnimationFrame(type);
                 } else {
@@ -1317,8 +1258,6 @@ function createPlaceholderImage(text) {
                 </svg>
             `)}`;
 }
-
-
 
 let startX = 0;
 let startY = 0;
@@ -1470,7 +1409,7 @@ function toggleMusic() {
             musicControl.title = 'Pause Music';
             isPlaying = true;
         }).catch(error => {
-            // alert('Click to play music!');
+
         });
     }
 }
@@ -1490,15 +1429,14 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// 8. Tối ưu hóa stars creation
 let starsCreated = false;
 function createStars() {
-    if (starsCreated) return; // Tránh tạo lại stars
+    if (starsCreated) return; 
 
     const starsContainer = document.getElementById('starsContainer');
     starsContainer.innerHTML = '';
 
-    const starCount = 100; // Giảm từ 150 xuống 100
+    const starCount = 100; 
     const starSizes = ['small', 'medium', 'large'];
     const fragment = document.createDocumentFragment();
 
@@ -1506,7 +1444,6 @@ function createStars() {
         const star = document.createElement('div');
         star.className = `star ${starSizes[Math.floor(Math.random() * starSizes.length)]}`;
 
-        // Batch style updates
         star.style.cssText = `
             left: ${Math.random() * 100}%;
             top: ${Math.random() * 100}%;
@@ -1532,29 +1469,24 @@ function hideStars() {
     starsContainer.style.display = 'none';
 }
 
-// 9. Cleanup function để giải phóng memory
 function cleanup() {
-    // Clear timeouts
+
     if (typewriterTimeout) {
         clearTimeout(typewriterTimeout);
     }
-    
+
     if (zIndexUpdateTimeout) {
         clearTimeout(zIndexUpdateTimeout);
     }
 
-    // Clear pools
     confettiPool.length = 0;
     heartPool.length = 0;
 
-    // Clear photo cache
     photoCache.clear();
 
-    // Reset counters
     heartPhotosCreated = 0;
     starsCreated = false;
-    
-    // ✅ FIX: Reset z-index properties
+
     const book = document.getElementById('book');
     if (book) {
         const pages = book.querySelectorAll('.page');
@@ -1565,12 +1497,11 @@ function cleanup() {
     }
 }
 
-// 10. Debounce resize events
 let resizeTimeout;
 function handleResize() {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-        // Resize logic here
+
         const matrixCanvas = document.getElementById('matrix-rain');
         if (matrixCanvas) {
             matrixCanvas.width = window.innerWidth;
@@ -1580,43 +1511,38 @@ function handleResize() {
 }
 
 window.addEventListener('resize', handleResize);
-// Call cleanup when page unloads
+
 window.addEventListener('beforeunload', cleanup);
 
-// ✅ FIX: Thêm các hàm quản lý z-index động cho pages
 let zIndexUpdateTimeout;
 
 function calculatePageZIndexes() {
-    
+
     const book = document.getElementById('book');
     if (!book) {
         console.warn('⚠️ [WARNING] Book element not found');
         return;
     }
-    
+
     const pages = book.querySelectorAll('.page');
     const totalPages = pages.length;
-    
-    
+
     if (totalPages === 0) {
         console.warn('⚠️ [WARNING] No pages found in book');
         return;
     }
-    
+
     pages.forEach((page, physicalIndex) => {
         const logicalPageIndex = physicalIndex * 2;
         const nextLogicalPageIndex = logicalPageIndex + 1;
-        
-        // Tính toán z-index cho trang hiện tại
+
         const normalZIndex = totalPages - physicalIndex;
         const flippedZIndex = physicalIndex + 1;
-        
-        
-        // Áp dụng z-index
+
         page.style.setProperty('--page-z-index', normalZIndex.toString());
         page.style.setProperty('--page-flipped-z-index', flippedZIndex.toString());
     });
-    
+
 }
 
 function updatePageZIndexes() {
@@ -1632,26 +1558,26 @@ function setupPageObserver() {
         console.warn('⚠️ [WARNING] Book element not found for observer setup');
         return;
     }
-    
+
     const observer = new MutationObserver((mutations) => {
         let shouldUpdate = false;
-        
+
         mutations.forEach((mutation) => {
             if (mutation.type === 'childList') {
                 shouldUpdate = true;
             }
         });
-        
+
         if (shouldUpdate) {
             updatePageZIndexes();
         }
     });
-    
+
     observer.observe(book, {
         childList: true,
         subtree: true
     });
-    
+
 }
 
 window.debugBookImages = function() {
