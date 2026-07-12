@@ -36,7 +36,7 @@ function startMiniGame() {
     overlay.style.top = '0';
     overlay.style.left = '0';
     overlay.style.width = '100%';
-    overlay.style.height = '100%';
+    overlay.style.height = '100dvh';
     overlay.style.backgroundColor = 'rgba(10, 5, 20, 0.8)';
     overlay.style.backdropFilter = 'blur(10px)';
     overlay.style.WebkitBackdropFilter = 'blur(10px)';
@@ -238,6 +238,13 @@ function startMiniGame() {
         isGameOver = true;
         clearInterval(gameInterval);
         gameArea.innerHTML = '';
+        gameArea.style.overflow = 'auto';
+    gameArea.style.display = 'flex';
+    gameArea.style.flexDirection = 'column';
+    gameArea.style.justifyContent = 'center';
+    gameArea.style.alignItems = 'center';
+    gameArea.style.padding = '10px';
+    container.style.overflow = 'auto';
         
         scoreBoard.innerText = "🎉 YOU WON! 🎉";
         scoreBoard.style.fontSize = '2.5rem';
