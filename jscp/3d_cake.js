@@ -229,7 +229,7 @@ function init3DCake() {
 }
 
 // === Orbit Drag ===
-let isDragging = false;
+let isCakeDragging = false;
 let prevDragX = 0;
 let prevDragY = 0;
 let cakeRotY = 0;
@@ -237,13 +237,13 @@ let cakeRotX = 0.2;
 
 function setupOrbitDrag(container) {
     container.addEventListener('mousedown', (e) => {
-        isDragging = true;
+        isCakeDragging = true;
         prevDragX = e.clientX;
         prevDragY = e.clientY;
         container.style.cursor = 'grabbing';
     });
     window.addEventListener('mousemove', (e) => {
-        if (isDragging && cakeGroup) {
+        if (isCakeDragging && cakeGroup) {
             const dx = e.clientX - prevDragX;
             const dy = e.clientY - prevDragY;
             cakeRotY += dx * 0.01;
@@ -254,7 +254,7 @@ function setupOrbitDrag(container) {
         }
     });
     window.addEventListener('mouseup', () => {
-        isDragging = false;
+        isCakeDragging = false;
         const container = document.getElementById('cake-container');
         if (container) container.style.cursor = 'grab';
     });
@@ -309,7 +309,7 @@ function animateCake() {
     requestAnimationFrame(animateCake);
 
     // Auto-rotate slowly when not dragging
-    if (!isDragging && cakeGroup) {
+    if (!isCakeDragging && cakeGroup) {
         cakeRotY += 0.003;
     }
     if (cakeGroup) {
