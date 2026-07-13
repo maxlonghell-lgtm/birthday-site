@@ -9,12 +9,12 @@ let settings = {
     matrixText: 'HAPPYBIRTHDAY',
     matrixColor1: '#ff69b4', 
     matrixColor2: '#ff1493', 
-    sequence: 'HAPPY|BIRTHDAY|TO|YOU|ZAHRA|❤',
+    sequence: 'HAPPY|BIRTHDAY|TO|YOU|SHARON|❤',
     sequenceColor: '#ff69b4', 
     gift: '', 
     pages: [
         { image: './image/Birthday!/cover.jpg', content: '' }, 
-        { image: './image/Birthday!/photo1.jpg', content: 'Dear Zahra, you bring so much joy and happiness! 💕' },
+        { image: './image/Birthday!/photo1.jpg', content: 'Dear sharon, you bring so much joy and happiness! 💕' },
         { image: './image/Birthday!/photo2.jpg', content: 'Your smile lights up every room you enter! ✨' },
         { image: './image/Birthday!/photo3.jpg', content: 'You are such an amazing and beautiful person! 🌸' },
         { image: './image/Birthday!/photo4.jpg', content: 'Your kindness and warmth touch hearts! 💖' },
@@ -32,7 +32,7 @@ let settings = {
 window.lastIsSaveState = false;
 
 const musicOptions = [
-    { value: './music/zahra.mp3', label: 'Happy Birthday Zahra' },
+    { value: './music/zahra.mp3', label: 'Happy Birthday sharon' },
     { value: './music/custom.mp3', label: 'Custom Music (Add your own)' }
 ];
 const gifOptions = [
