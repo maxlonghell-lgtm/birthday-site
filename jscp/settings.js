@@ -283,7 +283,7 @@ function initializeDefaultSettings() {
         matrixText: 'HAPPYBIRTHDAY',
         matrixColor1: '#ff69b4', 
         matrixColor2: '#ff1493', 
-        sequence: 'HAPPY|BIRTHDAY|TO|YOU|ZAHRA|❤',
+        sequence: 'HAPPY|BIRTHDAY|TO|YOU|SHARON|❤',
         sequenceColor: '#ff69b4', 
         gift: '', 
         enableBook: true,
@@ -303,7 +303,7 @@ function initializeDefaultSettings() {
 
     window.settings.pages = [
             { image: './image/Birthday!/cover.jpg', content: '' }, 
-            { image: './image/Birthday!/photo1.jpg', content: 'Dear Zahra, you bring so much joy and happiness! 💕' },
+            { image: './image/Birthday!/photo1.jpg', content: 'Dear Sharon, you bring so much joy and happiness! 💕' },
             { image: './image/Birthday!/photo2.jpg', content: 'Your smile lights up every room you enter! ✨' },
             { image: './image/Birthday!/photo3.jpg', content: 'You are such an amazing and beautiful person! 🌸' },
             { image: './image/Birthday!/photo4.jpg', content: 'Your kindness and warmth touch hearts! 💖' },
@@ -1056,7 +1056,7 @@ applySettingsButton.addEventListener('click', () => {
     settings.matrixText = document.getElementById('matrixText')?.value || settings.matrixText || 'HAPPYBIRTHDAY';
     settings.matrixColor1 = document.getElementById('matrixColor1')?.value || settings.matrixColor1;
     settings.matrixColor2 = document.getElementById('matrixColor2')?.value || settings.matrixColor2;
-    settings.sequence = document.getElementById('sequenceText')?.value || settings.sequence || 'HAPPY|BIRTHDAY|TO|YOU|ZAHRA|❤';
+    settings.sequence = document.getElementById('sequenceText')?.value || settings.sequence || 'HAPPY|BIRTHDAY|TO|YOU|SHARON|❤';
     settings.sequenceColor = document.getElementById('sequenceColor')?.value || settings.sequenceColor;
     settings.gift = document.getElementById('giftImage')?.value || settings.gift;
 
