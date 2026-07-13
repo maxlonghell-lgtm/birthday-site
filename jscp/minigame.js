@@ -237,47 +237,41 @@ function startMiniGame() {
    function winGame() {
     isGameOver = true;
     clearInterval(gameInterval);
-    gameArea.innerHTML = '';
 
-    gameArea.style.overflowY = 'auto';
-    gameArea.style.display = 'flex';
-    gameArea.style.flexDirection = 'column';
-    gameArea.style.justifyContent = 'flex-start';
-    gameArea.style.alignItems = 'center';
-    gameArea.style.padding = '10px';
-    gameArea.style.webkitOverflowScrolling = 'touch';
+    overlay.innerHTML = '';
+    overlay.style.display = 'flex';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'flex-start';
+    overlay.style.overflowY = 'auto';
+    overlay.style.paddingTop = '5vh';
+    overlay.style.paddingBottom = '5vh';
+    overlay.style.boxSizing = 'border-box';
 
-    scoreBoard.innerText = "🎉 YOU WON! 🎉";
-    scoreBoard.style.fontSize = 'clamp(1.2rem, 5vh, 2.5rem)';
+    const winBox = document.createElement('div');
+    winBox.style.textAlign = 'center';
+    winBox.style.padding = '20px';
+    winBox.style.maxWidth = '450px';
+    winBox.style.width = '90%';
+    winBox.style.margin = '0 auto';
 
-    const secretMsg = document.createElement('div');
-    secretMsg.style.textAlign = 'center';
-    secretMsg.style.padding = '10px 0';
-    secretMsg.style.animation = 'fadeInUp 1s ease';
-    secretMsg.innerHTML = '<h3 style="color:#fff; font-family:\'Pacifico\', cursive; font-size: clamp(1rem, 3.5vh, 1.8rem); line-height: 1.4; text-shadow: 0 0 10px #ff69b4; margin:0;">Secret Unlocked:<br><br>You are absolutely amazing, and today is all about YOU! 💖</h3>';
-    gameArea.appendChild(secretMsg);
+    winBox.innerHTML = `
+        <h2 style="color:#fff;font-family:'Pacifico',cursive;text-shadow:0 0 10px #ff69b4;margin:0 0 10px;">🎉 YOU WON! 🎉</h2>
+        <h3 style="color:#fff;font-family:'Pacifico',cursive;font-size:clamp(1rem,3.5vh,1.8rem);line-height:1.4;text-shadow:0 0 10px #ff69b4;">Secret Unlocked:<br><br>You are absolutely amazing, and today is all about YOU! 💖</h3>
+    `;
 
     const closeBtn = document.createElement('button');
-    closeBtn.innerText = "Close";
-    closeBtn.className = "timeline-btn";
-    closeBtn.style.marginTop = "15px";
-    closeBtn.style.marginBottom = "10px";
-    closeBtn.style.flexShrink = "0";
-    closeBtn.style.padding = "10px 30px";
-    closeBtn.style.fontSize = "1rem";
+    closeBtn.innerText = 'Close';
+    closeBtn.className = 'timeline-btn';
+    closeBtn.style.marginTop = '20px';
+    closeBtn.style.padding = '10px 30px';
+    closeBtn.style.fontSize = '1rem';
     closeBtn.addEventListener('click', () => {
         overlay.style.animation = 'fadeOutDown 0.5s ease';
         setTimeout(() => overlay.remove(), 500);
     });
 
-    const btnContainer = document.createElement('div');
-    btnContainer.style.display = 'flex';
-    btnContainer.style.justifyContent = 'center';
-    btnContainer.style.flexShrink = '0';
-    btnContainer.style.width = '100%';
-    btnContainer.appendChild(closeBtn);
-
-    gameArea.appendChild(btnContainer);
+    winBox.appendChild(closeBtn);
+    overlay.appendChild(winBox);
 }
 
 document.addEventListener('DOMContentLoaded', initEasterEgg);
