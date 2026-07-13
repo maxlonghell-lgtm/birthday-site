@@ -302,17 +302,17 @@ function initializeDefaultSettings() {
     }
 
     window.settings.pages = [
-            { image: './image/Birthday!/cover.jpg', content: '' }, 
-            { image: './image/Birthday!/photo1.jpg', content: 'Dear Sharon, you bring so much joy and happiness! 💕' },
-            { image: './image/Birthday!/photo2.jpg', content: 'Your smile lights up every room you enter! ✨' },
-            { image: './image/Birthday!/photo3.jpg', content: 'You are such an amazing and beautiful person! 🌸' },
-            { image: './image/Birthday!/photo4.jpg', content: 'Your kindness and warmth touch hearts! 💖' },
-            { image: './image/Birthday!/photo5.jpg', content: 'Wishing you the most wonderful birthday ever! 🎉' },
-            { image: './image/Birthday!/photo6.jpg', content: 'May all your dreams come true! ⭐' },
-            { image: './image/Birthday!/photo7.jpg', content: 'You deserve all the happiness! 💕' },
-            { image: './image/Birthday!/photo8.jpg', content: 'Love you so much! Have the best day! ❤️🎂' },
-            { image: './image/Birthday!/9.jpg', content: '' } 
-        ];
+        { image: './image/Birthday!/cover.jpg', content: '' },
+        { image: './image/Birthday!/photo1.jpg', content: 'Querida Sharon, ¡nos traes tanta alegría y felicidad! 💖' },
+        { image: './image/Birthday!/photo2.jpg', content: '¡Tu sonrisa ilumina cada lugar donde entras! ✨' },
+        { image: './image/Birthday!/photo3.jpg', content: 'Eres una persona increíble y hermosa, por dentro y por fuera! 🌸' },
+        { image: './image/Birthday!/photo4.jpg', content: 'Tu bondad y calidez tocan cada corazón que conoces! 💗' },
+        { image: './image/Birthday!/photo5.jpg', content: 'Vas a ser una maestra maravillosa. Los niños tienen mucha suerte de tenerte 🍎' },
+        { image: './image/Birthday!/photo6.jpg', content: '¡Que se cumplan todos tus sueños en este nuevo año de vida! ⭐' },
+        { image: './image/Birthday!/photo7.jpg', content: '¡22 años y con un futuro hermoso por delante! Mereces toda la felicidad 🌈' },
+        { image: './image/Birthday!/photo8.jpg', content: '¡Te queremos muchísimo! Que tengas el mejor cumpleaños ❤️🎂' },
+        { image: './image/Birthday!/9.jpg', content: '' }
+    ];
 
     pages = window.settings.pages;
 }
