@@ -13,12 +13,12 @@ function initTimeline() {
     timelineContainer.style.transition = 'opacity 1s ease';
 
     // Milestones data - agrega "image: './image/Birthday!/TUFOTO.jpg'" en cualquiera para poner una foto
-        const milestones = [
-        { year: "2004", title: "El Comienzo ✨", desc: "Donde todo empezó — ¡nació una estrella! 🌟", image: "./image/Birthday!/file_000000004364720e9a6a89b30d187b4f[2].png" },
-        { year: "2010", title: "Momentos Inolvidables 💫", desc: "Una época llena de alegría, risas y amor.", image: "./image/Birthday!/file_000000006a5c720e91068d049e9bb284[1].png" },
-        { year: "2018", title: "Cada Día Más Fuerte 🌸", desc: "Cada día creces más increíble y hermosa.", image: "./image/Birthday!/file_00000000f1f071f5816ab3018634cf9a[1].png" },
-        { year: "2022", title: "Un Nuevo Camino 📚", desc: "Comenzaste tu camino para ser maestra de educación inicial y primaria.", image: "./image/Birthday!/Screenshot_20260712_154936_com_zhiliaoapp_musically_DetailActivity~2[1].jpg" },
-        { year: "2026", title: "¡Feliz Cumpleaños Sharon! 🎂", desc: "22 años y con un futuro hermoso por delante. ¡Te deseamos lo mejor hoy y siempre!", image: "" }
+           const milestones = [
+        { year: "2004", title: "El Comienzo ✨", desc: "Donde todo empezó — ¡nació una estrella! 🌟", image: "./image/Birthday!/WhatsApp Image 2026-09-04 at 5.47.56 PM.jpeg" },
+        { year: "2010", title: "Momentos Inolvidables 💫", desc: "Una época llena de alegría, risas y amor.", image: "./image/Birthday!/file_000000004364720e9a6a89b30d187b4f[2].png" },
+        { year: "2018", title: "Cada Día Más Fuerte 🌸", desc: "Cada día creces más increíble y hermosa.", image: "./image/Birthday!/file_000000006a5c720e91068d049e9bb284[1].png" },
+        { year: "2022", title: "Un Nuevo Camino 📚", desc: "Comenzaste tu camino para ser maestra de educación inicial y primaria.", image: "./image/Birthday!/file_00000000f1f071f5816ab3018634cf9a[1].png" },
+        { year: "2026", title: "¡Feliz Cumpleaños Sharon! 🎂", desc: "22 años y con un futuro hermoso por delante. ¡Te deseamos lo mejor hoy y siempre!", image: "./image/Birthday!/Screenshot_20260712_154936_com_zhiliaoapp_musically_DetailActivity~2[1].jpg" }
     ];
     let html = '<h2 class="timeline-title">✨ Recuerdos ✨</h2><div class="timeline">';
     milestones.forEach((m, index) => {
